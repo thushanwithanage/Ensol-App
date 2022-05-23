@@ -1,16 +1,15 @@
 import React, { Component } from "react";
 import axios from "axios";
 
-import BarChart from "../charts/BarChart";
 import { Button} from 'react-bootstrap';
 import "../vendors/ti-icons/css/themify-icons.css";
 import "../vendors/base/vendor.bundle.base.css";
-import { Link } from "react-router-dom";
 import "../css/style.css";
 
 class Dashboard extends Component {
   state = {
     orders: [],
+    repairs: [],
     repair_count: 0,
     total_machines: 0,
     rented_machines: 0,
@@ -18,13 +17,11 @@ class Dashboard extends Component {
   };
 
   handleRowClick = (id) => {
-    /*<Link
-      to={{
-        pathname: "/orders",
-        id: id
-      }}
-    ></Link>*/
     window.location.href = "/orders/search?id=" +id;
+  }
+
+  handleRowClick2 = (id) => {
+    window.location.href = "/repairs/search?id=" +id;
   }
 
   render() {
@@ -245,63 +242,6 @@ class Dashboard extends Component {
           </div>
 
           <div class="row">
-            <div class="col-md-6 grid-margin stretch-card">
-              <div class="card">
-                <div class="card-body">
-                  <p class="card-title">Sales details</p>
-                  <p class="text-muted font-weight-light">Received overcame oh sensible so at an. Formed do change merely to county it. Am separate contempt domestic to to oh. On relation my so addition branched.</p>
-                  <div id="sales-legend" class="chartjs-legend mt-4 mb-2"></div>
-                  <div style={{marginLeft:'50px'}}>
-                    <BarChart story={10} bug={2} task={8} epic={4} sub={6} title={"Issue statistics: Type"}/>
-                  </div>
-                </div>
-                <div class="card border-right-0 border-left-0 border-bottom-0">
-                  <div class="d-flex justify-content-center justify-content-md-end">
-                    <div class="dropdown flex-md-grow-1 flex-xl-grow-0">
-                      <button class="btn btn-lg btn-outline-light dropdown-toggle rounded-0 border-top-0 border-bottom-0" type="button" id="dropdownMenuDate2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                        Today
-                      </button>
-                      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuDate2">
-                        <a class="dropdown-item" href="#">January - March</a>
-                        <a class="dropdown-item" href="#">March - June</a>
-                        <a class="dropdown-item" href="#">June - August</a>
-                        <a class="dropdown-item" href="#">August - November</a>
-                      </div>
-                    </div>
-                    <button class="btn btn-lg btn-outline-light text-primary rounded-0 border-0 d-none d-md-block" type="button"> View all </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6 grid-margin stretch-card">
-              <div class="card border-bottom-0">
-                <div class="card-body pb-0">
-                  <p class="card-title">Purchases</p>
-                  <p class="text-muted font-weight-light">The argument in favor of using filler text goes something like this: If you use real content in the design process, anytime you reach a review</p>
-                  <div class="d-flex flex-wrap mb-5">
-                    <div class="me-5 mt-3">
-                      <p class="text-muted">Status</p>
-                      <h3>362</h3>
-                    </div>
-                    <div class="me-5 mt-3">
-                      <p class="text-muted">New users</p>
-                      <h3>187</h3>
-                    </div>
-                    <div class="me-5 mt-3">
-                      <p class="text-muted">Chats</p>
-                      <h3>524</h3>
-                    </div>
-                    <div class="mt-3">
-                      <p class="text-muted">Feedbacks</p>
-                      <h3>509</h3>
-                    </div> 
-                  </div>
-                </div>
-                <canvas id="order-chart" class="w-100"></canvas>
-              </div>
-            </div>
-          </div>
-          <div class="row">
             <div class="col-md-12 grid-margin stretch-card">
               <div class="card position-relative">
                 <div class="card-body">
@@ -340,92 +280,47 @@ class Dashboard extends Component {
             
 
           </div>
+
           <div class="row">
             <div class="col-md-12 grid-margin stretch-card">
               <div class="card position-relative">
                 <div class="card-body">
-                  <p class="card-title">Detailed Reports</p>
-                  <div class="row">
-                    <div class="col-md-12 col-xl-3 d-flex flex-column justify-content-center">
-                      <div class="ml-xl-4">
-                        <h1>33500</h1>
-                        <h3 class="font-weight-light mb-xl-4">Sales</h3>
-                        <p class="text-muted mb-2 mb-xl-0">The total number of sessions within the date range. It is the period time a user is actively engaged with your website, page or app, etc</p>
-                      </div>  
-                    </div>
-                    <div class="col-md-12 col-xl-9">
-                      <div class="row">
-                        <div class="col-md-6 mt-3 col-xl-5">
-                          <canvas id="north-america-chart"></canvas>
-                          <div id="north-america-legend"></div>
-                        </div>
-                        <div class="col-md-6 col-xl-7">
-                          <div class="table-responsive mb-3 mb-md-0">
-                            <table class="table table-borderless report-table">
-                              <tr>
-                                <td class="text-muted">Illinois</td>
-                                <td class="w-100 px-0">
-                                  <div class="progress progress-md mx-4">
-                                    <div class="progress-bar bg-primary" role="progressbar" style={{width: '70%'}} aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
-                                  </div>
-                                </td>
-                                <td><h5 class="font-weight-bold mb-0">524</h5></td>
-                              </tr>
-                              <tr>
-                                <td class="text-muted">Washington</td>
-                                <td class="w-100 px-0">
-                                  <div class="progress progress-md mx-4">
-                                    <div class="progress-bar bg-primary" role="progressbar" style={{width: '30%'}} aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
-                                  </div>
-                                </td>
-                                <td><h5 class="font-weight-bold mb-0">722</h5></td>
-                              </tr>
-                              <tr>
-                                <td class="text-muted">Mississippi</td>
-                                <td class="w-100 px-0">
-                                  <div class="progress progress-md mx-4">
-                                    <div class="progress-bar bg-primary" role="progressbar" style={{width: '95%'}} aria-valuenow="95" aria-valuemin="0" aria-valuemax="100"></div>
-                                  </div>
-                                </td>
-                                <td><h5 class="font-weight-bold mb-0">173</h5></td>
-                              </tr>
-                              <tr>
-                                <td class="text-muted">California</td>
-                                <td class="w-100 px-0">
-                                  <div class="progress progress-md mx-4">
-                                    <div class="progress-bar bg-primary" role="progressbar" style={{width: '60%'}} aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-                                  </div>
-                                </td>
-                                <td><h5 class="font-weight-bold mb-0">945</h5></td>
-                              </tr>
-                              <tr>
-                                <td class="text-muted">Maryland</td>
-                                <td class="w-100 px-0">
-                                  <div class="progress progress-md mx-4">
-                                    <div class="progress-bar bg-primary" role="progressbar" style={{width: '40%'}} aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
-                                  </div>
-                                </td>
-                                <td><h5 class="font-weight-bold mb-0">553</h5></td>
-                              </tr>
-                              <tr>
-                                <td class="text-muted">Alaska</td>
-                                <td class="w-100 px-0">
-                                  <div class="progress progress-md mx-4">
-                                    <div class="progress-bar bg-primary" role="progressbar" style={{width: '75%'}} aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-                                  </div>
-                                </td>
-                                <td><h5 class="font-weight-bold mb-0">912</h5></td>
-                              </tr>
-                            </table>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                  <p class="card-title mb-0">Repairs</p>
+                  <div class="table-responsive">
+                    <table class="table table-hover">
+                      <thead>
+                        <tr>
+                          <th>Repair Id</th>
+                          <th>Description</th>
+                          <th>Username</th>
+                          <th>User address</th>
+                          <th>Telephone</th>
+                          <th>Repair status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+
+                          {this.state.orders ? this.state.repairs.map((repair) => (
+                            <tr key={repair.id} onClick={() => this.handleRowClick2(repair.id)}>
+                            <td>{repair.id}</td>
+                            <td>{repair.description}</td>
+                            <td>{repair.username}</td>
+                            <td>{repair.address}</td>
+                            <td>{repair.telephone}</td>
+                            <td><Button style={{backgroundColor: repair.color, borderColor: repair.color, color: 'white', width: '125px'}}>{repair.status}</Button></td>
+                          </tr>
+                          )) : null}
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               </div>
             </div>
+
+            
+
           </div>
+
         </div>
 
         <footer class="footer">
@@ -451,6 +346,8 @@ class Dashboard extends Component {
         "Authorization": "Bearer " + sessionStorage.getItem("token")
       },
     });
+
+
 
     let allOrders = data.data.orders.map((order) => {
       if(order.orderStatus == 0)
@@ -484,9 +381,42 @@ class Dashboard extends Component {
       };
     });
 
-    this.setState({ orders: allOrders, repair_count: data.data.top_values.repair_count, total_machines: data.data.top_values.total_machines, rented_machines: data.data.top_values.rented_machines, user_count: data.data.top_values.user_count });
-  }
+    let allRepairs = data.data.repairs.map((repair) => {
+      if(repair.status == 0)
+      {
+        repair.status = "Cancelled";
+        repair.color = "Red";
+      }
+      else if(repair.status == 1)
+      {
+        repair.status = "Completed";
+        repair.color = "Green";
+      }
+      else if(repair.status == 2)
+      {
+        repair.status = "Ongoing";
+        repair.color = "Yellow";
+      }
+      return {
+        id: repair.id,
+        description: repair.description,
+        username: repair.order.user.name,
+        address: repair.order.user.address,
+        telephone: repair.order.user.telephone,
+        status: repair.status,
+        color: repair.color
+      };
+    });
 
+    this.setState({ orders: allOrders, repairs: allRepairs, repair_count: data.data.top_values.repair_count, total_machines: data.data.top_values.total_machines, rented_machines: data.data.top_values.rented_machines, user_count: data.data.top_values.user_count });
+  }
 }
+
+window.addEventListener( "pageshow", function ( event ) {
+  var historyTraversal = event.persisted || ( typeof window.performance != "undefined" && window.performance.navigation.type === 2 );
+  if ( historyTraversal ) {
+    window.location.reload();
+  }
+});
 
 export default Dashboard;

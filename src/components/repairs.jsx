@@ -4,16 +4,18 @@ import "../css/Login.css";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-class Orders extends Component {
+class Repairs extends Component {
   state = {
-    machines: [],
+    rid: "",
+    description: "",
     oid: "",
-    total: 0,
     odate: "",
+    mtype: "",
     status: "",
     username: "",
     address: "",
     tele: "",
+    image: "",
     newstatus: 0
   };
 
@@ -40,9 +42,9 @@ class Orders extends Component {
 
   submitHandler = async (e) => {
     e.preventDefault();
-    console.log('Order Status: ', this.state.newstatus);
+    console.log('Repair Status: ', this.state.newstatus);
     let status = {
-        orderStatus: this.state.newstatus
+        status: this.state.newstatus
     };
     if (navigator.onLine) 
     {
@@ -50,13 +52,13 @@ class Orders extends Component {
 
         if(status === -1)
         {
-          this.notify("Invalid order status");
+          this.notify("Invalid repair status");
         }
         else
         {
           if (status) 
           {
-            const { data } = await axios.put("https://ensolapi.herokuapp.com/order/" + this.state.oid, status, {
+            const { data } = await axios.put("https://ensolapi.herokuapp.com/repair/" + this.state.rid, status, {
             headers: {
                 "Authorization": "Bearer " + sessionStorage.getItem("token")
             },
@@ -75,7 +77,7 @@ class Orders extends Component {
           } 
           else 
           {
-            this.notify("Failed to get the order status");
+            this.notify("Failed to get the repair status");
           }
         }
       } 
@@ -94,21 +96,33 @@ class Orders extends Component {
         <div class="col-12 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <h4 class="card-title">Order Deails</h4>
+                  <h4 class="card-title">Repair Deails</h4>
                   <p class="card-description">
-                    Order Id : {this.state.oid}
+                    Repair Id : {this.state.rid}
                   </p>
                   <form class="forms-sample">
                     <div class="form-group">
-                      <label for="exampleInputName1">Order Total</label>
-                      <input type="text" class="form-control" placeholder="Total" value={this.state.total}/>
+                      <label for="exampleInputName1">Description</label>
+                      <input type="text" class="form-control" placeholder="Total" value={this.state.description}/>
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputEmail3">Order Id</label>
+                      <input type="text" class="form-control" placeholder="Order date" value={this.state.oid}/>
                     </div>
                     <div class="form-group">
                       <label for="exampleInputEmail3">Order Date</label>
                       <input type="text" class="form-control" placeholder="Order date" value={this.state.odate}/>
                     </div>
                     <div class="form-group">
-                      <label for="exampleInputEmail3">Order Status</label>
+                      <label for="exampleInputEmail3">Machine Type</label>
+                      <input type="text" class="form-control" placeholder="Order date" value={this.state.mtype}/>
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputEmail3">Machine Image</label> <br/>
+                      <img style={{height:200, marginLeft:'50px'}} alt="machine image" src={this.state.image}/>
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputEmail3">Repair Status</label>
                       <input type="text" class="form-control" placeholder="Order status" value={this.state.status}/>
                     </div>
                     <div class="form-group">
@@ -124,51 +138,14 @@ class Orders extends Component {
                       <input type="text" class="form-control" id="exampleInputPassword4" placeholder="Telephone number" value={this.state.tele}/>
                     </div>
 
-                    <div class="row">
-                        
-            <div class="col-md-12 grid-margin stretch-card">
-              <div class="card position-relative">
-                <div class="card-body">
-                  <p class="card-title mb-0">Machines</p>
-                  <div class="table-responsive">
-                    <table class="table table-hover">
-                      <thead>
-                        <tr>
-                          <th>Machine name</th>
-                          <th>Price</th>
-                          <th>Quantity</th>
-                          <th>Contract End Date</th>
-                          <th>Image</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-
-                          {this.state.machines ? this.state.machines.map((machine) => (
-                            <tr>
-                            <td>{machine.mname}</td>
-                            <td>{machine.price}</td>
-                            <td>{machine.qty}</td>
-                            <td>{machine.edate}</td>
-                            {machine.image[0].length>0 ? <td><img style={{width: '200px !important'}} alt="logo image" src={machine.image[0]}/> </td> : null}
-                          </tr>
-                          )) : null}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
                     {this.state.status !== "Cancelled" ? 
                     <div>
                     <div class="form-group">
-                      <label for="exampleSelectGender">Update Order Status</label>
+                      <label for="exampleSelectGender">Update Repair Status</label>
                         <select class="form-control" id="statusDropDown" onChange={this.onChangeHandler}>
                           <option id="0">Cancelled</option>
                           <option id="1">Completed</option>
                           <option id="2">Ongoing</option>
-                          <option id="3">Pending</option>
                         </select>
                       </div>
                       <button type="submit" class="btn btn-warning me-2" onClick={this.submitHandler}>Update</button>
@@ -189,23 +166,13 @@ class Orders extends Component {
     const queryParams = new URLSearchParams(window.location.search);
     const id = queryParams.get("id")
 
-    let { data } = await axios.get("https://ensolapi.herokuapp.com/order/" + id, {
+    let { data } = await axios.get("https://ensolapi.herokuapp.com/repair/" + id, {
       headers: {
         "Authorization": "Bearer " + sessionStorage.getItem("token")
       },
     });
 
-        let allMachines = data.data.machines.map((machine) => {
-            return {
-            mname: machine.machineType,
-            price: machine.rentPrice,
-            qty: machine.OrderMachines.quantity,
-            edate: machine.OrderMachines.contractEndDate.substring(0,10),
-            image: JSON.parse(machine.images)
-            };
-        });
-
-        let ostatus = data.data.orderStatus;
+        let ostatus = data.data.status;
         if(ostatus == 0)
           {
             ostatus = "Cancelled";
@@ -223,9 +190,11 @@ class Orders extends Component {
             ostatus = "Pending";
           }
     
-        this.setState({ machines: allMachines, oid: data.data.id, total: data.data.price, status: ostatus, odate: data.data.orderDate.substring(0,10), username: data.data.user.name, address: data.data.user.address, tele: data.data.user.telephone });
+          let mimage = JSON.parse(data.data.machine.images);
+
+        this.setState({ rid: data.data.id, description: data.data.description, image: mimage[0], mtype: data.data.machine.machineType, status: ostatus, oid: data.data.order.id, odate: data.data.order.orderDate.substring(0,10), /*username: data.data.user.name, address: data.data.user.address, tele: data.data.user.telephone*/ });
         console.log(data);
   }
 }
 
-export default Orders;
+export default Repairs;
