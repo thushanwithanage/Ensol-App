@@ -63,6 +63,7 @@ class Login extends Component {
             
             if (data.status) 
             {
+              sessionStorage.setItem("token", data.accessToken);
               window.location.href = "/dashboard";
             } 
             else 

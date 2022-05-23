@@ -2,21 +2,30 @@ import React, { Component } from "react";
 import axios from "axios";
 
 import BarChart from "../charts/BarChart";
-
+import { Button} from 'react-bootstrap';
 import "../vendors/ti-icons/css/themify-icons.css";
 import "../vendors/base/vendor.bundle.base.css";
-
+import { Link } from "react-router-dom";
 import "../css/style.css";
 
 class Dashboard extends Component {
   state = {
-    email: "",
-    password: "",
-    token: "",
-    showErrorAlert: false,
-    alertHeading: "",
-    alertData: ""
+    orders: [],
+    repair_count: 0,
+    total_machines: 0,
+    rented_machines: 0,
+    user_count: 0
   };
+
+  handleRowClick = (id) => {
+    /*<Link
+      to={{
+        pathname: "/orders",
+        id: id
+      }}
+    ></Link>*/
+    window.location.href = "/orders/search?id=" +id;
+  }
 
   render() {
 
@@ -176,99 +185,60 @@ class Dashboard extends Component {
             <div class="col-md-3 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <p class="card-title text-md-center text-xl-left">Sales</p>
+                  <p class="card-title text-md-center text-xl-left">Total Machines</p>
                   <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
-                    <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0">34040</h3>
-                    <i class="ti-calendar icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
+                    <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0">{this.state.total_machines}</h3>
+                    
+                    <i class="bi bi-bag-check-fill"></i>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-bag-check-fill" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M10.5 3.5a2.5 2.5 0 0 0-5 0V4h5v-.5zm1 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0zm-.646 5.354a.5.5 0 0 0-.708-.708L7.5 10.793 6.354 9.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z"/>
+                      </svg>
                   </div>  
-                  <p class="mb-0 mt-2 text-danger">0.12% <span class="text-black ms-1"><small>(30 days)</small></span></p>
+                  
                 </div>
               </div>
             </div>
             <div class="col-md-3 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <p class="card-title text-md-center text-xl-left">Revenue</p>
+                  <p class="card-title text-md-center text-xl-left">Rented Machines</p>
                   <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
-                    <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0">47033</h3>
-                    <i class="ti-user icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
+                    <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0">{this.state.rented_machines}</h3>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-bag-dash-fill" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M10.5 3.5a2.5 2.5 0 0 0-5 0V4h5v-.5zm1 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0zM6 9.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1H6z"/>
+                      </svg>
                   </div>  
-                  <p class="mb-0 mt-2 text-danger">0.47% <span class="text-black ms-1"><small>(30 days)</small></span></p>
+                  
                 </div>
               </div>
             </div>
             <div class="col-md-3 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <p class="card-title text-md-center text-xl-left">Downloads</p>
+                  <p class="card-title text-md-center text-xl-left">Repairs Count</p>
                   <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
-                    <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0">40016</h3>
-                    <i class="ti-agenda icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
+                    <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0">{this.state.repair_count}</h3>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-bag-x-fill" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M10.5 3.5a2.5 2.5 0 0 0-5 0V4h5v-.5zm1 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0zM6.854 8.146a.5.5 0 1 0-.708.708L7.293 10l-1.147 1.146a.5.5 0 0 0 .708.708L8 10.707l1.146 1.147a.5.5 0 0 0 .708-.708L8.707 10l1.147-1.146a.5.5 0 0 0-.708-.708L8 9.293 6.854 8.146z"/>
+                      </svg>
                   </div>  
-                  <p class="mb-0 mt-2 text-success">64.00%<span class="text-black ms-1"><small>(30 days)</small></span></p>
+                  
                 </div>
               </div>
             </div>
             <div class="col-md-3 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <p class="card-title text-md-center text-xl-left">Returns</p>
+                  <p class="card-title text-md-center text-xl-left">User Count</p>
                   <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
-                    <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0">61344</h3>
-                    <i class="ti-layers-alt icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
+                    <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0">{this.state.user_count}</h3>
+                     <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
+                      <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                      <path fill-rule="evenodd" d="M5.216 14A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216z"/>
+                      <path d="M4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/>
+                    </svg>
                   </div>  
-                  <p class="mb-0 mt-2 text-success">23.00%<span class="text-black ms-1"><small>(30 days)</small></span></p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-3 grid-margin stretch-card">
-              <div class="card">
-                <div class="card-body">
-                  <p class="card-title text-md-center text-xl-left">Sales</p>
-                  <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
-                    <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0">34040</h3>
-                    <i class="ti-calendar icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
-                  </div>  
-                  <p class="mb-0 mt-2 text-danger">0.12% <span class="text-black ms-1"><small>(30 days)</small></span></p>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-3 grid-margin stretch-card">
-              <div class="card">
-                <div class="card-body">
-                  <p class="card-title text-md-center text-xl-left">Revenue</p>
-                  <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
-                    <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0">47033</h3>
-                    <i class="ti-user icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
-                  </div>  
-                  <p class="mb-0 mt-2 text-danger">0.47% <span class="text-black ms-1"><small>(30 days)</small></span></p>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-3 grid-margin stretch-card">
-              <div class="card">
-                <div class="card-body">
-                  <p class="card-title text-md-center text-xl-left">Downloads</p>
-                  <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
-                    <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0">40016</h3>
-                    <i class="ti-agenda icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
-                  </div>  
-                  <p class="mb-0 mt-2 text-success">64.00%<span class="text-black ms-1"><small>(30 days)</small></span></p>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-3 grid-margin stretch-card">
-              <div class="card">
-                <div class="card-body">
-                  <p class="card-title text-md-center text-xl-left">Downloads</p>
-                  <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
-                    <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0">40016</h3>
-                    <i class="ti-agenda icon-md text-muted mb-0 mb-md-3 mb-xl-0"></i>
-                  </div>  
-                  <p class="mb-0 mt-2 text-success">64.00%<span class="text-black ms-1"><small>(30 days)</small></span></p>
+                  
                 </div>
               </div>
             </div>
@@ -335,60 +305,39 @@ class Dashboard extends Component {
             <div class="col-md-12 grid-margin stretch-card">
               <div class="card position-relative">
                 <div class="card-body">
-                  <p class="card-title mb-0">Top Products</p>
+                  <p class="card-title mb-0">Orders</p>
                   <div class="table-responsive">
                     <table class="table table-hover">
                       <thead>
                         <tr>
-                          <th>User</th>
-                          <th>Product</th>
-                          <th>Sale</th>
-                          <th>Status</th>
+                          <th>Order Id</th>
+                          <th>Username</th>
+                          <th>User address</th>
+                          <th>Telephone</th>
+                          <th>Price</th>
+                          <th>Order status</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td>Jacob</td>
-                          <td>Photoshop</td>
-                          <td class="text-danger"> 28.76% <i class="ti-arrow-down"></i></td>
-                          <td><label class="badge badge-danger">Pending</label></td>
-                        </tr>
-                        <tr>
-                          <td>Messsy</td>
-                          <td>Flash</td>
-                          <td class="text-danger"> 21.06% <i class="ti-arrow-down"></i></td>
-                          <td><label class="badge badge-warning">In progress</label></td>
-                        </tr>
-                        <tr>
-                          <td>John</td>
-                          <td>Premier</td>
-                          <td class="text-danger"> 35.00% <i class="ti-arrow-down"></i></td>
-                          <td><label class="badge badge-info">Fixed</label></td>
-                        </tr>
-                        <tr>
-                          <td>Peter</td>
-                          <td>After effects</td>
-                          <td class="text-success"> 82.00% <i class="ti-arrow-up"></i></td>
-                          <td><label class="badge badge-success">Completed</label></td>
-                        </tr>
-                        <tr>
-                          <td>Dave</td>
-                          <td>53275535</td>
-                          <td class="text-success"> 98.05% <i class="ti-arrow-up"></i></td>
-                          <td><label class="badge badge-warning">In progress</label></td>
-                        </tr>
-                        <tr>
-                          <td>Messsy</td>
-                          <td>Flash</td>
-                          <td class="text-danger"> 21.06% <i class="ti-arrow-down"></i></td>
-                          <td><label class="badge badge-info">Fixed</label></td>
-                        </tr>
+
+                          {this.state.orders ? this.state.orders.map((order) => (
+                            <tr key={order.id} onClick={() => this.handleRowClick(order.id)}>
+                            <td>{order.id}</td>
+                            <td>{order.username}</td>
+                            <td>{order.address}</td>
+                            <td>{order.telephone}</td>
+                            <td>{order.price}</td>
+                            <td><Button style={{backgroundColor: order.color, borderColor: order.color, color: 'white', width: '125px'}}>{order.status}</Button></td>
+                          </tr>
+                          )) : null}
                       </tbody>
                     </table>
                   </div>
                 </div>
               </div>
             </div>
+
+            
 
           </div>
           <div class="row">
@@ -494,6 +443,50 @@ class Dashboard extends Component {
   
     );
   }
+
+  async componentDidMount()
+  {
+    let { data } = await axios.get("https://ensolapi.herokuapp.com/admin/dashboardValues", {
+      headers: {
+        "Authorization": "Bearer " + sessionStorage.getItem("token")
+      },
+    });
+
+    let allOrders = data.data.orders.map((order) => {
+      if(order.orderStatus == 0)
+      {
+        order.orderStatus = "Cancelled";
+        order.color = "Red";
+      }
+      else if(order.orderStatus == 1)
+      {
+        order.orderStatus = "Completed";
+        order.color = "Green";
+      }
+      else if(order.orderStatus == 2)
+      {
+        order.orderStatus = "Ongoing";
+        order.color = "Yellow";
+      }
+      else if(order.orderStatus == 3)
+      {
+        order.orderStatus = "Pending";
+        order.color = "Blue";
+      }
+      return {
+        id: order.id,
+        username: order.user.name,
+        address: order.user.address,
+        telephone: order.user.telephone,
+        price: order.price,
+        status: order.orderStatus,
+        color: order.color
+      };
+    });
+
+    this.setState({ orders: allOrders, repair_count: data.data.top_values.repair_count, total_machines: data.data.top_values.total_machines, rented_machines: data.data.top_values.rented_machines, user_count: data.data.top_values.user_count });
+  }
+
 }
 
 export default Dashboard;

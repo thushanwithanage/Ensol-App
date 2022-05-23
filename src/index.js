@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import App from "./App"
 import Login from './components/login';
 import Dashboard from './components/dashboard';
+import Orders from './components/orders';
 
 ReactDOM.render(
   <BrowserRouter>
@@ -15,6 +16,8 @@ ReactDOM.render(
         <Route exact path="/" element={<Login />} />
 
         <Route exact path="/dashboard" element={<Dashboard />} />
+
+        <Route path="/orders/:id" element={<Orders/>}/>
         
       </Routes>
     </React.Fragment>
