@@ -144,6 +144,7 @@ class Orders extends Component {
             <th>Machine name</th>
             <th>Price</th>
             <th>Quantity</th>
+            <th>Contract Start Date</th>
             <th>Contract End Date</th>
             
           </tr>
@@ -156,6 +157,7 @@ class Orders extends Component {
               <td>{machine.mname}</td>
               <td>{machine.price}</td>
               <td>{machine.qty}</td>
+              <td>{machine.sdate}</td>
               <td>{machine.edate}</td>
               </tr>
             )) : null}
@@ -212,6 +214,7 @@ class Orders extends Component {
             price: machine.rentPrice,
             qty: machine.OrderMachines.quantity,
             edate: machine.OrderMachines.contractEndDate.substring(0,10),
+            sdate: machine.OrderMachines.contractStartDate.substring(0,10),
             image: JSON.parse(machine.images)
             };
         });
