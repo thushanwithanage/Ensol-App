@@ -6,6 +6,8 @@ import "../vendors/ti-icons/css/themify-icons.css";
 import "../vendors/base/vendor.bundle.base.css";
 import "../css/style.css";
 
+import logo from "../images/company_logo.png";
+
 class Dashboard extends Component {
   state = {
     orders: [],
@@ -30,56 +32,14 @@ class Dashboard extends Component {
         <div class="container-scroller">
     
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+
       <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-        <img alt="logo image" className="login_logo" src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/1024px-Amazon_logo.svg.png'/>
+        <img style={{width:70, height:70}} src={logo}/>
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
-        <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
-          <span class="ti-view-list"></span>
-        </button>
-        <ul class="navbar-nav mr-lg-2">
-          <li class="nav-item nav-search d-none d-lg-block">
-            <div class="input-group">
-              <div class="input-group-prepend hover-cursor" id="navbar-search-icon">
-                <span class="input-group-text" id="search">
-                  <i class="ti-search"></i>
-                </span>
-              </div>
-              <input type="text" class="form-control" id="navbar-search-input" placeholder="Search" aria-label="search" aria-describedby="search"/>
-            </div>
-          </li>
-        </ul>
+
+        
         <ul class="navbar-nav navbar-nav-right">
-          <li class="nav-item dropdown me-1">
-            <a class="nav-link count-indicator dropdown-toggle d-flex justify-content-center align-items-center" id="messageDropdown" data-bs-toggle="dropdown">
-              <i class="ti-email mx-0"></i>
-            </a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" data-bs-toggle="dropdown">
-              <i class="ti-bell mx-0"></i>
-              <span class="count"></span>
-            </a>
-            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="notificationDropdown">
-              <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
-              <a class="dropdown-item">
-              </a>
-              <a class="dropdown-item">
-                <div class="item-thumbnail">
-                  <div class="item-icon bg-warning">
-                    <i class="ti-settings mx-0"></i>
-                  </div>
-                </div>
-              </a>
-              <a class="dropdown-item">
-                <div class="item-thumbnail">
-                  <div class="item-icon bg-info">
-                    <i class="ti-user mx-0"></i>
-                  </div>
-                </div>
-              </a>
-            </div>
-          </li>
           <li class="nav-item nav-profile dropdown">
             <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" id="profileDropdown">
             <img alt="profile" src='https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50'/>
@@ -251,8 +211,8 @@ class Dashboard extends Component {
                       <thead>
                         <tr>
                           <th>Order Id</th>
-                          <th>Username</th>
-                          <th>User address</th>
+                          <th>Customer</th>
+                          <th>Customer address</th>
                           <th>Telephone</th>
                           <th>Price</th>
                           <th>Order status</th>
@@ -292,8 +252,8 @@ class Dashboard extends Component {
                         <tr>
                           <th>Repair Id</th>
                           <th>Description</th>
-                          <th>Username</th>
-                          <th>User address</th>
+                          <th>Customer</th>
+                          <th>Customer address</th>
                           <th>Telephone</th>
                           <th>Repair status</th>
                         </tr>
@@ -353,22 +313,22 @@ class Dashboard extends Component {
       if(order.orderStatus == 0)
       {
         order.orderStatus = "Cancelled";
-        order.color = "Red";
+        order.color = "#F44336";
       }
       else if(order.orderStatus == 1)
       {
         order.orderStatus = "Completed";
-        order.color = "Green";
+        order.color = "#4CAF50";
       }
       else if(order.orderStatus == 2)
       {
         order.orderStatus = "Ongoing";
-        order.color = "Yellow";
+        order.color = "#3F51B5";
       }
       else if(order.orderStatus == 3)
       {
         order.orderStatus = "Pending";
-        order.color = "Blue";
+        order.color = "#FF5722";
       }
       return {
         id: order.id,
@@ -385,17 +345,17 @@ class Dashboard extends Component {
       if(repair.status == 0)
       {
         repair.status = "Cancelled";
-        repair.color = "Red";
+        repair.color = "#F44336";
       }
       else if(repair.status == 1)
       {
         repair.status = "Completed";
-        repair.color = "Green";
+        repair.color = "#4CAF50";
       }
       else if(repair.status == 2)
       {
         repair.status = "Ongoing";
-        repair.color = "Yellow";
+        repair.color = "#3F51B5";
       }
       return {
         id: repair.id,

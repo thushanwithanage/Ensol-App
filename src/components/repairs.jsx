@@ -16,6 +16,8 @@ class Repairs extends Component {
     address: "",
     tele: "",
     image: "",
+    sdate: "",
+    edate: "",
     newstatus: 0
   };
 
@@ -93,7 +95,7 @@ class Repairs extends Component {
 
   render() {
     return (
-        <div class="col-12 grid-margin stretch-card">
+        <div>
               <div class="card">
                 <div class="card-body">
                   <h4 class="card-title">Repair Deails</h4>
@@ -112,6 +114,14 @@ class Repairs extends Component {
                     <div class="form-group">
                       <label for="exampleInputEmail3">Order Date</label>
                       <input type="text" class="form-control" placeholder="Order date" value={this.state.odate}/>
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputEmail3">Contract Start Date</label>
+                      <input type="text" class="form-control" placeholder="Order date" value={this.state.sdate}/>
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputEmail3">Contract End Date</label>
+                      <input type="text" class="form-control" placeholder="Order date" value={this.state.edate}/>
                     </div>
                     <div class="form-group">
                       <label for="exampleInputEmail3">Machine Type</label>
@@ -192,7 +202,22 @@ class Repairs extends Component {
     
           let mimage = JSON.parse(data.data.machine.images);
 
-        this.setState({ rid: data.data.id, description: data.data.description, image: mimage[0], mtype: data.data.machine.machineType, status: ostatus, oid: data.data.order.id, odate: data.data.order.orderDate.substring(0,10), /*username: data.data.user.name, address: data.data.user.address, tele: data.data.user.telephone*/ });
+          if(data.data.machine.contractStartDate != null)
+          {
+            this.setState({ sdate: data.data.machine.contractStartDate.substring(0,10) });
+          }
+
+          if(data.data.machine.contractEndDate != null)
+          {
+            this.setState({ edate: data.data.machine.contractEndDate.substring(0,10) });
+          }
+
+          if(data.data.order.orderDate != null)
+          {
+            this.setState({ odate: data.data.order.orderDate.substring(0,10) });
+          }
+
+        this.setState({ rid: data.data.id, description: data.data.description, image: mimage[0], mtype: data.data.machine.machineType, status: ostatus, oid: data.data.order.id, username: data.data.order.user.name, address: data.data.order.user.address, tele: data.data.order.user.telephone });
         console.log(data);
   }
 }

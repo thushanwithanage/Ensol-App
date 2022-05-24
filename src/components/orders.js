@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import "../css/Login.css";
+//import "../css/Login.css";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -91,7 +91,8 @@ class Orders extends Component {
 
   render() {
     return (
-        <div class="col-12 grid-margin stretch-card">
+      <div>
+        <div>
               <div class="card">
                 <div class="card-body">
                   <h4 class="card-title">Order Deails</h4>
@@ -125,45 +126,55 @@ class Orders extends Component {
                     </div>
 
                     <div class="row">
-                        
-            <div class="col-md-12 grid-margin stretch-card">
-              <div class="card position-relative">
-                <div class="card-body">
-                  <p class="card-title mb-0">Machines</p>
-                  <div class="table-responsive">
-                    <table class="table table-hover">
-                      <thead>
-                        <tr>
-                          <th>Machine name</th>
-                          <th>Price</th>
-                          <th>Quantity</th>
-                          <th>Contract End Date</th>
-                          <th>Image</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-
-                          {this.state.machines ? this.state.machines.map((machine) => (
-                            <tr>
-                            <td>{machine.mname}</td>
-                            <td>{machine.price}</td>
-                            <td>{machine.qty}</td>
-                            <td>{machine.edate}</td>
-                            {machine.image[0].length>0 ? <td><img style={{width: '200px !important'}} alt="logo image" src={machine.image[0]}/> </td> : null}
-                          </tr>
-                          )) : null}
-                      </tbody>
-                    </table>
-                  </div>
+          </div>                   
+                  </form>
                 </div>
               </div>
             </div>
-          </div>
 
-                    {this.state.status !== "Cancelled" ? 
+<div>
+<div class="card position-relative">
+  <div class="card-body">
+    <p class="card-title mb-0">Machines</p>
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Image</th>
+            <th>Machine name</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Contract End Date</th>
+            
+          </tr>
+        </thead>
+        <tbody>
+
+            {this.state.machines ? this.state.machines.map((machine) => (
+              <tr>
+              {machine.image[0].length>0 ? <td><img style={{width: 100, height:100}} alt="logo image" src={machine.image[0]}/> </td> : null}
+              <td>{machine.mname}</td>
+              <td>{machine.price}</td>
+              <td>{machine.qty}</td>
+              <td>{machine.edate}</td>
+              </tr>
+            )) : null}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</div>
+
+<div>
+<div class="card position-relative">
+  <div class="card-body">
+    <div class="table-responsive"></div>
+
+    {this.state.status !== "Cancelled" ? 
                     <div>
                     <div class="form-group">
-                      <label for="exampleSelectGender">Update Order Status</label>
+                    <p class="card-title mb-0">Update Order Status</p>
                         <select class="form-control" id="statusDropDown" onChange={this.onChangeHandler}>
                           <option id="0">Cancelled</option>
                           <option id="1">Completed</option>
@@ -176,11 +187,11 @@ class Orders extends Component {
                     
                       : null }
 
-                   
-                  </form>
-                </div>
-              </div>
-            </div>
+    </div>
+  </div>
+</div>
+
+</div>
     );
   }
 

@@ -7,6 +7,8 @@ import "../css/Login.css";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+import logo from "../images/company_logo.png";
+
 class Login extends Component {
   state = {
     email: "",
@@ -95,7 +97,7 @@ class Login extends Component {
             <img
                 alt="logo image"
                 className="login_logo"
-                src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/1024px-Amazon_logo.svg.png' 
+                src={logo} 
             />
         </Link>
 
@@ -115,12 +117,6 @@ class Login extends Component {
 
                 <button type='submit' className='login_signInButton' onClick={this.submitHandler}>Sign In</button>
             </form>
-
-            <p>By signing-in you agree to the AMAZON FAKE CLONE Conditions of Use & Sale. Please
-                see our Privacy Notice, our Cookies Notice and our Interest-Based Ads Notice.
-            </p>
-
-            <button className='login_registerButton' >Create your Amazon Account</button>
         </div>
     </div>
     );
