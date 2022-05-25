@@ -5,16 +5,26 @@ import { Button} from 'react-bootstrap';
 import "../vendors/ti-icons/css/themify-icons.css";
 import "../vendors/base/vendor.bundle.base.css";
 import "../css/style.css";
-
+import { DatePickerInput } from 'carbon-components-react';
 import logo from "../images/company_logo.png";
+
+import DateFnsUtils from '@date-io/date-fns';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
 
 class Dashboard extends Component {
   state = {
     orders: [],
+    startDate: new Date(),
+    filteredOrders: [],
+    filterOn: false,
     repairs: [],
     repair_count: 0,
     total_machines: 0,
     rented_machines: 0,
+    filterText: "Filter",
     user_count: 0
   };
 
@@ -24,6 +34,74 @@ class Dashboard extends Component {
 
   handleRowClick2 = (id) => {
     window.location.href = "/repairs/search?id=" +id;
+  }
+
+  setStartDate = (sdate) => {
+    this.setState({ startDate: sdate })
+  }
+
+  setEndDate = (edate) => {
+    this.setState({ endDate: edate })
+  }
+
+  handleDateChange = (date) => {
+    this.state.startDate = date;
+  }
+
+  filterHandler = async (e) => {
+    e.preventDefault();
+    this.state.filterOn = !this.state.filterOn;
+
+    if(this.state.filterOn == true)
+    {
+      let orderFilter = {
+        endDate: this.state.endDate,
+        startDate: this.state.startDate
+      };
+      let { data } = await axios.post("https://ensolapi.herokuapp.com/admin/order/filter", orderFilter, {
+        headers: {
+          "Authorization": "Bearer " + sessionStorage.getItem("token")
+        },
+      });
+  
+      let filteredList = data.data.orders.map((order) => {
+        if(order.orderStatus == 0)
+        {
+          order.orderStatus = "Cancelled";
+          order.color = "#F44336";
+        }
+        else if(order.orderStatus == 1)
+        {
+          order.orderStatus = "Completed";
+          order.color = "#4CAF50";
+        }
+        else if(order.orderStatus == 2)
+        {
+          order.orderStatus = "Ongoing";
+          order.color = "#3F51B5";
+        }
+        else if(order.orderStatus == 3)
+        {
+          order.orderStatus = "Pending";
+          order.color = "#FF5722";
+        }
+        return {
+          id: order.id,
+          username: order.user.name,
+          address: order.user.address,
+          telephone: order.user.telephone,
+          price: order.price,
+          status: order.orderStatus,
+          color: order.color
+        };
+      });
+  
+      this.setState({ filteredOrders: filteredList, filterText: "View all" })
+    }
+    else
+    {
+      this.setState({ filteredOrders: this.state.orders, filterText: "Filter" })
+    }
   }
 
   render() {
@@ -201,6 +279,43 @@ class Dashboard extends Component {
             </div>
           </div>
 
+          <div style={{textAlign: 'right'}}>
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  disableToolbar
+                  variant="inline"
+                  format="MM/dd/yyyy"
+                  margin="normal"
+                  id="date-picker-inline"
+                  label="Start Date"
+                  value={this.state.startDate}
+                  onChange={date => this.setStartDate(date)} 
+                  KeyboardButtonProps={{
+                    'aria-label': 'change date',
+                  }}
+                />
+              </MuiPickersUtilsProvider>
+
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  disableToolbar
+                  variant="inline"
+                  format="MM/dd/yyyy"
+                  margin="normal"
+                  id="date-picker-inline2"
+                  label="End Date"
+                  value={this.state.endDate}
+                  onChange={date => this.setEndDate(date)} 
+                  KeyboardButtonProps={{
+                    'aria-label': 'change date',
+                  }}
+                />
+              </MuiPickersUtilsProvider>
+
+              <button style={{marginTop: 15, color:'white'}} type="submit" class="btn btn-warning me-2" onClick={this.filterHandler}>{this.state.filterText}</button>
+
+          </div>
+
           <div class="row">
             <div class="col-md-12 grid-margin stretch-card">
               <div class="card position-relative">
@@ -220,7 +335,7 @@ class Dashboard extends Component {
                       </thead>
                       <tbody>
 
-                          {this.state.orders ? this.state.orders.map((order) => (
+                          {this.state.filteredOrders ? this.state.filteredOrders.map((order) => (
                             <tr key={order.id} onClick={() => this.handleRowClick(order.id)}>
                             <td>{order.id}</td>
                             <td>{order.username}</td>
@@ -236,9 +351,6 @@ class Dashboard extends Component {
                 </div>
               </div>
             </div>
-
-            
-
           </div>
 
           <div class="row">
@@ -260,10 +372,10 @@ class Dashboard extends Component {
                       </thead>
                       <tbody>
 
-                          {this.state.orders ? this.state.repairs.map((repair) => (
+                          {this.state.repairs ? this.state.repairs.map((repair) => (
                             <tr key={repair.id} onClick={() => this.handleRowClick2(repair.id)}>
                             <td>{repair.id}</td>
-                            <td>{repair.description}</td>
+                            <td>{repair.description.substring(0,20)}</td>
                             <td>{repair.username}</td>
                             <td>{repair.address}</td>
                             <td>{repair.telephone}</td>
@@ -276,11 +388,7 @@ class Dashboard extends Component {
                 </div>
               </div>
             </div>
-
-            
-
           </div>
-
         </div>
 
         <footer class="footer">
@@ -288,16 +396,15 @@ class Dashboard extends Component {
             <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © RWP 2022</span>
           </div>
         </footer>
-
       </div>
-
     </div>
-
   </div>
-
-  
     );
   }
+
+  
+
+
 
   async componentDidMount()
   {
@@ -306,8 +413,6 @@ class Dashboard extends Component {
         "Authorization": "Bearer " + sessionStorage.getItem("token")
       },
     });
-
-
 
     let allOrders = data.data.orders.map((order) => {
       if(order.orderStatus == 0)
@@ -368,7 +473,7 @@ class Dashboard extends Component {
       };
     });
 
-    this.setState({ orders: allOrders, repairs: allRepairs, repair_count: data.data.top_values.repair_count, total_machines: data.data.top_values.total_machines, rented_machines: data.data.top_values.rented_machines, user_count: data.data.top_values.user_count });
+    this.setState({ orders: allOrders, filteredOrders: allOrders, repairs: allRepairs, repair_count: data.data.top_values.repair_count, total_machines: data.data.top_values.total_machines, rented_machines: data.data.top_values.rented_machines, user_count: data.data.top_values.user_count });
   }
 }
 
