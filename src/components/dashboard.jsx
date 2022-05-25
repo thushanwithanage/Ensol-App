@@ -18,13 +18,19 @@ class Dashboard extends Component {
   state = {
     orders: [],
     startDate: new Date(),
+    endDate: new Date(),
+    startDate2: new Date(),
+    endDate2: new Date(),
     filteredOrders: [],
     filterOn: false,
+    filterOn2: false,
     repairs: [],
+    filteredRepairs: [],
     repair_count: 0,
     total_machines: 0,
     rented_machines: 0,
     filterText: "Filter",
+    filterText2: "Filter",
     user_count: 0
   };
 
@@ -42,6 +48,14 @@ class Dashboard extends Component {
 
   setEndDate = (edate) => {
     this.setState({ endDate: edate })
+  }
+
+  setStartDate2 = (sdate) => {
+    this.setState({ startDate2: sdate })
+  }
+
+  setEndDate2 = (edate) => {
+    this.setState({ endDate2: edate })
   }
 
   handleDateChange = (date) => {
@@ -77,7 +91,7 @@ class Dashboard extends Component {
         }
         else if(order.orderStatus == 2)
         {
-          order.orderStatus = "Ongoing";
+          order.orderStatus = "Accepted";
           order.color = "#3F51B5";
         }
         else if(order.orderStatus == 3)
@@ -103,6 +117,63 @@ class Dashboard extends Component {
       this.setState({ filteredOrders: this.state.orders, filterText: "Filter" })
     }
   }
+
+  filterHandler2 = async (e) => {
+    e.preventDefault();
+    this.state.filterOn2 = !this.state.filterOn2;
+
+    if(this.state.filterOn2 == true)
+    {
+      let repairFilter = {
+        endDate: this.state.endDate2,
+        startDate: this.state.startDate2
+      };
+      let { data } = await axios.post("https://ensolapi.herokuapp.com/admin/repair/filter", repairFilter, {
+        headers: {
+          "Authorization": "Bearer " + sessionStorage.getItem("token")
+        },
+      });
+  
+      let filteredList = data.data.repairs.map((repair) => {
+        if(repair.status == 0)
+        {
+          repair.status = "Cancelled";
+          repair.color = "#F44336";
+        }
+        else if(repair.status == 1)
+        {
+          repair.status = "Completed";
+          repair.color = "#4CAF50";
+        }
+        else if(repair.status == 2)
+        {
+          repair.status = "Accepted";
+          repair.color = "#3F51B5";
+        }
+        else if(repair.status == 3)
+        {
+          repair.status = "Pending";
+          repair.color = "#FF5722";
+        }
+        return {
+          id: repair.id,
+          description: repair.description,
+          username: repair.order.user.name,
+          address: repair.order.user.address,
+          telephone: repair.order.user.telephone,
+          status: repair.status,
+          color: repair.color
+        };
+      });
+  
+      this.setState({ filteredRepairs: filteredList, filterText2: "View all" })
+    }
+    else
+    {
+      this.setState({ filteredRepairs: this.state.repairs, filterText2: "Filter" })
+    }
+  }
+
 
   render() {
 
@@ -353,6 +424,43 @@ class Dashboard extends Component {
             </div>
           </div>
 
+          <div style={{textAlign: 'right'}}>
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  disableToolbar
+                  variant="inline"
+                  format="MM/dd/yyyy"
+                  margin="normal"
+                  id="date-picker-inline"
+                  label="Start Date"
+                  value={this.state.startDate2}
+                  onChange={date => this.setStartDate2(date)} 
+                  KeyboardButtonProps={{
+                    'aria-label': 'change date',
+                  }}
+                />
+              </MuiPickersUtilsProvider>
+
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  disableToolbar
+                  variant="inline"
+                  format="MM/dd/yyyy"
+                  margin="normal"
+                  id="date-picker-inline2"
+                  label="End Date"
+                  value={this.state.endDate2}
+                  onChange={date => this.setEndDate2(date)} 
+                  KeyboardButtonProps={{
+                    'aria-label': 'change date',
+                  }}
+                />
+              </MuiPickersUtilsProvider>
+
+              <button style={{marginTop: 15, color:'white'}} type="submit" class="btn btn-warning me-2" onClick={this.filterHandler2}>{this.state.filterText2}</button>
+
+          </div>
+
           <div class="row">
             <div class="col-md-12 grid-margin stretch-card">
               <div class="card position-relative">
@@ -372,7 +480,7 @@ class Dashboard extends Component {
                       </thead>
                       <tbody>
 
-                          {this.state.repairs ? this.state.repairs.map((repair) => (
+                          {this.state.filteredRepairs ? this.state.filteredRepairs.map((repair) => (
                             <tr key={repair.id} onClick={() => this.handleRowClick2(repair.id)}>
                             <td>{repair.id}</td>
                             <td>{repair.description.substring(0,20)}</td>
@@ -427,7 +535,7 @@ class Dashboard extends Component {
       }
       else if(order.orderStatus == 2)
       {
-        order.orderStatus = "Ongoing";
+        order.orderStatus = "Accepted";
         order.color = "#3F51B5";
       }
       else if(order.orderStatus == 3)
@@ -459,7 +567,7 @@ class Dashboard extends Component {
       }
       else if(repair.status == 2)
       {
-        repair.status = "Ongoing";
+        repair.status = "Accepted";
         repair.color = "#3F51B5";
       }
       return {
@@ -473,7 +581,7 @@ class Dashboard extends Component {
       };
     });
 
-    this.setState({ orders: allOrders, filteredOrders: allOrders, repairs: allRepairs, repair_count: data.data.top_values.repair_count, total_machines: data.data.top_values.total_machines, rented_machines: data.data.top_values.rented_machines, user_count: data.data.top_values.user_count });
+    this.setState({ orders: allOrders, filteredOrders: allOrders, repairs: allRepairs, filteredRepairs: allRepairs, repair_count: data.data.top_values.repair_count, total_machines: data.data.top_values.total_machines, rented_machines: data.data.top_values.rented_machines, user_count: data.data.top_values.user_count });
   }
 }
 

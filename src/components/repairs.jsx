@@ -155,7 +155,8 @@ class Repairs extends Component {
                         <select class="form-control" id="statusDropDown" onChange={this.onChangeHandler}>
                           <option id="0">Cancelled</option>
                           <option id="1">Completed</option>
-                          <option id="2">Ongoing</option>
+                          <option id="2">Accepted</option>
+                          <option id="3">Pending</option>
                         </select>
                       </div>
                       <button type="submit" class="btn btn-warning me-2" onClick={this.submitHandler}>Update</button>

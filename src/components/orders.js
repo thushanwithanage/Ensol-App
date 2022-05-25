@@ -180,7 +180,7 @@ class Orders extends Component {
                         <select class="form-control" id="statusDropDown" onChange={this.onChangeHandler}>
                           <option id="0">Cancelled</option>
                           <option id="1">Completed</option>
-                          <option id="2">Ongoing</option>
+                          <option id="2">Accepted</option>
                           <option id="3">Pending</option>
                         </select>
                       </div>
@@ -230,7 +230,7 @@ class Orders extends Component {
           }
           else if(ostatus == 2)
           {
-            ostatus = "Ongoing";
+            ostatus = "Accepted";
           }
           else if(ostatus == 3)
           {
