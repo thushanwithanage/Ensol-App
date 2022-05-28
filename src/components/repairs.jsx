@@ -98,7 +98,7 @@ class Repairs extends Component {
         <div>
               <div class="card">
                 <div class="card-body">
-                  <h4 class="card-title">Repair Deails</h4>
+                  <h4 class="card-title">Repair Details</h4>
                   <p class="card-description">
                     Repair Id : {this.state.rid}
                   </p>

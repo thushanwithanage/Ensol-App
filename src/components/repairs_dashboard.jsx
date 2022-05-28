@@ -14,7 +14,7 @@ import {
 } from '@material-ui/pickers';
 import {Link} from "react-router-dom";
 
-class Dashboard extends Component {
+class Repair extends Component {
     state = {
         orders: [],
         startDate: new Date(),
@@ -225,91 +225,12 @@ class Dashboard extends Component {
                                 <div class="col-md-12 grid-margin">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div>
-                                            <h4 class="font-weight-bold mb-0">Dashboard</h4>
+                                            <h4 class="font-weight-bold mb-0">Repairs</h4>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="row">
-
-                                <div class="col-md-3 grid-margin stretch-card">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <p class="card-title text-md-center text-xl-left">Total Machines</p>
-                                            <div
-                                                class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
-                                                <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0">{this.state.total_machines}</h3>
-
-
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
-                                                     fill="currentColor" class="bi bi-bag-check-fill"
-                                                     viewBox="0 0 16 16">
-                                                    <path fill-rule="evenodd"
-                                                          d="M10.5 3.5a2.5 2.5 0 0 0-5 0V4h5v-.5zm1 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0zm-.646 5.354a.5.5 0 0 0-.708-.708L7.5 10.793 6.354 9.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z"/>
-                                                </svg>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 grid-margin stretch-card">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <p class="card-title text-md-center text-xl-left">Rented Machines</p>
-                                            <div
-                                                class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
-                                                <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0">{this.state.rented_machines}</h3>
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
-                                                     fill="currentColor" class="bi bi-bag-dash-fill"
-                                                     viewBox="0 0 16 16">
-                                                    <path fill-rule="evenodd"
-                                                          d="M10.5 3.5a2.5 2.5 0 0 0-5 0V4h5v-.5zm1 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0zM6 9.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1H6z"/>
-                                                </svg>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 grid-margin stretch-card">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <p class="card-title text-md-center text-xl-left">Repairs Count</p>
-                                            <div
-                                                class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
-                                                <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0">{this.state.repair_count}</h3>
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
-                                                     fill="currentColor" class="bi bi-bag-x-fill" viewBox="0 0 16 16">
-                                                    <path fill-rule="evenodd"
-                                                          d="M10.5 3.5a2.5 2.5 0 0 0-5 0V4h5v-.5zm1 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0zM6.854 8.146a.5.5 0 1 0-.708.708L7.293 10l-1.147 1.146a.5.5 0 0 0 .708.708L8 10.707l1.146 1.147a.5.5 0 0 0 .708-.708L8.707 10l1.147-1.146a.5.5 0 0 0-.708-.708L8 9.293 6.854 8.146z"/>
-                                                </svg>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 grid-margin stretch-card">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <p class="card-title text-md-center text-xl-left">User Count</p>
-                                            <div
-                                                class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
-                                                <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0">{this.state.user_count}</h3>
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
-                                                     fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
-                                                    <path
-                                                        d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-                                                    <path fill-rule="evenodd"
-                                                          d="M5.216 14A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216z"/>
-                                                    <path d="M4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/>
-                                                </svg>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
 
                             <div style={{textAlign: 'right'}}>
                                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -320,8 +241,8 @@ class Dashboard extends Component {
                                         margin="normal"
                                         id="date-picker-inline"
                                         label="Start Date"
-                                        value={this.state.startDate}
-                                        onChange={date => this.setStartDate(date)}
+                                        value={this.state.startDate2}
+                                        onChange={date => this.setStartDate2(date)}
                                         KeyboardButtonProps={{
                                             'aria-label': 'change date',
                                         }}
@@ -336,21 +257,17 @@ class Dashboard extends Component {
                                         margin="normal"
                                         id="date-picker-inline2"
                                         label="End Date"
-                                        value={this.state.endDate}
-                                        onChange={date => this.setEndDate(date)}
+                                        value={this.state.endDate2}
+                                        onChange={date => this.setEndDate2(date)}
                                         KeyboardButtonProps={{
                                             'aria-label': 'change date',
                                         }}
                                     />
                                 </MuiPickersUtilsProvider>
 
-                                <button style={{marginTop: 15, marginLeft: 15, color: 'white'}} type="submit"
-                                        class="btn btn-warning me-2"
-                                        onClick={this.filterHandler}>{this.state.filterText}</button>
-
                                 <button style={{marginTop: 15, color: 'white'}} type="submit"
-                                        class="btn btn-danger"
-                                        onClick={this.filterReset}>{this.state.filterResetText}</button>
+                                        class="btn btn-warning me-2"
+                                        onClick={this.filterHandler2}>{this.state.filterText2}</button>
 
                             </div>
 
@@ -358,35 +275,35 @@ class Dashboard extends Component {
                                 <div class="col-md-12 grid-margin stretch-card">
                                     <div class="card position-relative">
                                         <div class="card-body">
-                                            <p class="card-title mb-0">Orders</p>
+                                            <p class="card-title mb-0">Repairs</p>
                                             <div class="table-responsive">
                                                 <table class="table table-hover">
                                                     <thead>
                                                     <tr>
-                                                        <th>Order Id</th>
+                                                        <th>Repair Id</th>
+                                                        <th>Description</th>
                                                         <th>Customer</th>
                                                         <th>Customer address</th>
                                                         <th>Telephone</th>
-                                                        <th>Price</th>
-                                                        <th>Order status</th>
+                                                        <th>Repair status</th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
 
-                                                    {this.state.filteredOrders ? this.state.filteredOrders.map((order) => (
-                                                        <tr key={order.id}
-                                                            onClick={() => this.handleRowClick(order.id)}>
-                                                            <td>{order.id}</td>
-                                                            <td>{order.username}</td>
-                                                            <td>{order.address}</td>
-                                                            <td>{order.telephone}</td>
-                                                            <td>{order.price}</td>
+                                                    {this.state.filteredRepairs ? this.state.filteredRepairs.map((repair) => (
+                                                        <tr key={repair.id}
+                                                            onClick={() => this.handleRowClick2(repair.id)}>
+                                                            <td>{repair.id}</td>
+                                                            <td>{repair.description.substring(0, 20)}</td>
+                                                            <td>{repair.username}</td>
+                                                            <td>{repair.address}</td>
+                                                            <td>{repair.telephone}</td>
                                                             <td><Button style={{
-                                                                backgroundColor: order.color,
-                                                                borderColor: order.color,
+                                                                backgroundColor: repair.color,
+                                                                borderColor: repair.color,
                                                                 color: 'white',
                                                                 width: '125px'
-                                                            }}>{order.status}</Button></td>
+                                                            }}>{repair.status}</Button></td>
                                                         </tr>
                                                     )) : null}
                                                     </tbody>
@@ -487,4 +404,4 @@ window.addEventListener("pageshow", function (event) {
     }
 });
 
-export default Dashboard;
+export default Repair;
