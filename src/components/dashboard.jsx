@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import axios from "axios";
 
-import {Button} from 'react-bootstrap';
+import {Button, Nav, NavDropdown} from 'react-bootstrap';
 import "../vendors/ti-icons/css/themify-icons.css";
 import "../vendors/base/vendor.bundle.base.css";
 import "../css/style.css";
@@ -117,6 +117,12 @@ class Dashboard extends Component {
         this.setState({filteredOrders: this.state.orders})
 
     }
+    logOut = () => {
+
+        sessionStorage.clear();
+        window.location.href = "/";
+
+    }
 
     filterHandler2 = async (e) => {
         e.preventDefault();
@@ -181,8 +187,16 @@ class Dashboard extends Component {
                         <ul class="navbar-nav navbar-nav-right">
                             <li class="nav-item nav-profile dropdown">
                                 <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" id="profileDropdown">
-                                    <img alt="profile"
-                                         src='https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50'/>
+                                    <Nav>
+                                        <NavDropdown title={sessionStorage.getItem("email")}>
+
+
+                                            <NavDropdown.Item onClick={this.logOut}>Logout</NavDropdown.Item>
+
+
+                                        </NavDropdown>
+                                    </Nav>
+
                                 </a>
                             </li>
                         </ul>
@@ -202,7 +216,7 @@ class Dashboard extends Component {
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" data-bs-toggle="collapse" href="/dashboard" aria-expanded="false"
+                                <a class="nav-link" data-bs-toggle="collapse" href="/machine" aria-expanded="false"
                                    aria-controls="ui-basic">
                                     <i class="ti-plug menu-icon"/>
                                     <span class="menu-title">Machines</span>

@@ -38,7 +38,7 @@ class Login extends Component {
     let user = {
       email: this.state.email,
       password: this.state.password,
-      fcm: "asd",
+      fcm: " ",
     };
     if (navigator.onLine) 
     {
@@ -66,6 +66,7 @@ class Login extends Component {
             if (data.status) 
             {
               sessionStorage.setItem("token", data.accessToken);
+              sessionStorage.setItem("email", this.state.email);
               window.location.href = "/dashboard";
             } 
             else 
