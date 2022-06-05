@@ -55,7 +55,9 @@ const EditMachineData = () => {
                 },
             })
             .then((response) => {
-                console.log(response.data);
+                if (response.data.status)
+                    successNotify(response.data.data);
+
             });
     };
 
