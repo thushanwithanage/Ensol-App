@@ -17,13 +17,6 @@ const AddMachineData = () => {
     const [image, setImage] = useState({});
     const [deleteid, setDeleteid] = useState(0);
 
-    // console.log("machinePhotos" + serialnumber);
-    // console.log("machinename" + machinename);
-    // console.log("description" + description);
-    // console.log("availablequantity" + availablequantity);
-    // console.log("rentprice" + rentprice);
-    // console.log("image" + image);
-
     const data = {
         serialNumber: serialnumber,
         machineType: machinename,
@@ -57,57 +50,25 @@ const AddMachineData = () => {
                 },
             })
             .then((response) => {
-                console.log(response.data);
+
+                if (response.data.status)
+                    successNotify(response.data.data);
             });
     };
 
-    // const deletes = () => {
-    //     const token = sessionStorage.getItem("token");
-    //
-    //     axios
-    //         .delete(`https://ensolapi.herokuapp.com/machine/${deleteid}`, {
-    //             headers: {
-    //                 "Content-Type": "multipart/form-data", Authorization: `Bearer ${token}`,
-    //             },
-    //         })
-    //         .then((response) => {
-    //             console.log(response.data);
-    //         });
-    // };
-    //
-    // const updatedata = () => {
-    //     const datas = {};
-    //     if (serialnumber) {
-    //         datas.serialNumber = serialnumber;
-    //     }
-    //     if (machinename) {
-    //         datas.machineType = machinename;
-    //     }
-    //     if (description) {
-    //         datas.description = description;
-    //     }
-    //     if (rentprice) {
-    //         datas.rentPrice = rentprice;
-    //     }
-    //     if (availablequantity) {
-    //         datas.availableQty = availablequantity;
-    //     }
-    //     if (image) {
-    //         datas.machinePhotos = image;
-    //     }
-    //
-    //     const token = sessionStorage.getItem("token");
-    //
-    //     axios
-    //         .put(`https://ensolapi.herokuapp.com/machine/${deleteid}`, datas, {
-    //             headers: {
-    //                 "Content-Type": "multipart/form-data", Authorization: `Bearer ${token}`,
-    //             },
-    //         })
-    //         .then((response) => {
-    //             console.log(response.data);
-    //         });
-    // };
+    const successNotify = (msg) => {
+        console.log(msg);
+        toast.success(msg, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+        });
+    }
+
 
     const imageCome = (img) => {
         setImage(img);
