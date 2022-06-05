@@ -105,11 +105,11 @@ class Repairs extends Component {
                   <form class="forms-sample">
                     <div class="form-group">
                       <label for="exampleInputName1">Description</label>
-                      <input type="text" class="form-control" placeholder="Total" value={this.state.description}/>
+                      <input type="text" class="form-control" placeholder="Description" value={this.state.description}/>
                     </div>
                     <div class="form-group">
                       <label for="exampleInputEmail3">Order Id</label>
-                      <input type="text" class="form-control" placeholder="Order date" value={this.state.oid}/>
+                      <input type="text" class="form-control" placeholder="Order Id" value={this.state.oid}/>
                     </div>
                     <div class="form-group">
                       <label for="exampleInputEmail3">Order Date</label>

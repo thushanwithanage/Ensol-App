@@ -292,7 +292,7 @@ class Repair extends Component {
                                 <div class="col-md-12 grid-margin stretch-card">
                                     <div class="card position-relative">
                                         <div class="card-body">
-                                            <p class="card-title mb-0">Repairs</p>
+
                                             <div class="table-responsive">
                                                 <table class="table table-hover">
                                                     <thead>

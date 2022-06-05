@@ -4,8 +4,11 @@ import {Container, Form, Nav, NavDropdown} from "react-bootstrap";
 import {Button} from "react-bootstrap";
 import logo from "../images/company_logo.png";
 import {Link} from "react-router-dom";
+import 'react-toastify/dist/ReactToastify.css';
+import {ToastContainer, toast} from 'react-toastify';
 
-const AddData = () => {
+
+const AddMachineData = () => {
     const [serialnumber, setserialNumber] = useState("");
     const [machinename, setmachineName] = useState("");
     const [description, setDescription] = useState("");
@@ -29,8 +32,21 @@ const AddData = () => {
         availableQty: availablequantity,
         machinePhotos: image,
     };
+    const notify = (msg) => {
+        console.log(msg);
+        toast.error(msg, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+        });
+    }
 
     const Insert = async () => {
+
         const token = sessionStorage.getItem("token");
         console.log(token);
 
@@ -45,53 +61,53 @@ const AddData = () => {
             });
     };
 
-    const deletes = () => {
-        const token = sessionStorage.getItem("token");
-
-        axios
-            .delete(`https://ensolapi.herokuapp.com/machine/${deleteid}`, {
-                headers: {
-                    "Content-Type": "multipart/form-data", Authorization: `Bearer ${token}`,
-                },
-            })
-            .then((response) => {
-                console.log(response.data);
-            });
-    };
-
-    const updatedata = () => {
-        const datas = {};
-        if (serialnumber) {
-            datas.serialNumber = serialnumber;
-        }
-        if (machinename) {
-            datas.machineType = machinename;
-        }
-        if (description) {
-            datas.description = description;
-        }
-        if (rentprice) {
-            datas.rentPrice = rentprice;
-        }
-        if (availablequantity) {
-            datas.availableQty = availablequantity;
-        }
-        if (image) {
-            datas.machinePhotos = image;
-        }
-
-        const token = sessionStorage.getItem("token");
-
-        axios
-            .put(`https://ensolapi.herokuapp.com/machine/${deleteid}`, datas, {
-                headers: {
-                    "Content-Type": "multipart/form-data", Authorization: `Bearer ${token}`,
-                },
-            })
-            .then((response) => {
-                console.log(response.data);
-            });
-    };
+    // const deletes = () => {
+    //     const token = sessionStorage.getItem("token");
+    //
+    //     axios
+    //         .delete(`https://ensolapi.herokuapp.com/machine/${deleteid}`, {
+    //             headers: {
+    //                 "Content-Type": "multipart/form-data", Authorization: `Bearer ${token}`,
+    //             },
+    //         })
+    //         .then((response) => {
+    //             console.log(response.data);
+    //         });
+    // };
+    //
+    // const updatedata = () => {
+    //     const datas = {};
+    //     if (serialnumber) {
+    //         datas.serialNumber = serialnumber;
+    //     }
+    //     if (machinename) {
+    //         datas.machineType = machinename;
+    //     }
+    //     if (description) {
+    //         datas.description = description;
+    //     }
+    //     if (rentprice) {
+    //         datas.rentPrice = rentprice;
+    //     }
+    //     if (availablequantity) {
+    //         datas.availableQty = availablequantity;
+    //     }
+    //     if (image) {
+    //         datas.machinePhotos = image;
+    //     }
+    //
+    //     const token = sessionStorage.getItem("token");
+    //
+    //     axios
+    //         .put(`https://ensolapi.herokuapp.com/machine/${deleteid}`, datas, {
+    //             headers: {
+    //                 "Content-Type": "multipart/form-data", Authorization: `Bearer ${token}`,
+    //             },
+    //         })
+    //         .then((response) => {
+    //             console.log(response.data);
+    //         });
+    // };
 
     const imageCome = (img) => {
         setImage(img);
@@ -107,7 +123,9 @@ const AddData = () => {
     }
 
     return (<div className="container-scroller">
-
+        <div>
+            <ToastContainer />
+        </div>
         <nav className="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
 
             <div className="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
@@ -159,7 +177,7 @@ const AddData = () => {
 
                     </li>
                     <li className="nav-item">
-                        <Link class="nav-link" to="/repairs">
+                        <Link className="nav-link" to="/repairs">
                             <i className="ti-settings menu-icon"/>
                             <span className="menu-title">Repairs</span>
                         </Link>
@@ -180,16 +198,7 @@ const AddData = () => {
                     </div>
 
                     <Form>
-                        <Form.Group className="mb-3">
-                            <Form.Label>id (use for delete or update)</Form.Label>
-                            <Form.Control
-                                type="text"
-                                placeholder="id"
-                                onChange={(event) => {
-                                    setDeleteid(event.target.value);
-                                }}
-                            />
-                        </Form.Group>
+
 
                         <Form.Group className="mb-3">
                             <Form.Label>Serial Number</Form.Label>
@@ -225,7 +234,7 @@ const AddData = () => {
                         <Form.Group className="mb-3">
                             <Form.Label>Rent Price</Form.Label>
                             <Form.Control
-                                type="text"
+                                type="number"
                                 placeholder="Enter Rent Price"
                                 onChange={(event) => {
                                     setrentPrice(event.target.value);
@@ -235,7 +244,8 @@ const AddData = () => {
                         <Form.Group className="mb-3">
                             <Form.Label>Available Quantity</Form.Label>
                             <Form.Control
-                                type="email"
+                                type="number"
+
                                 placeholder="Enter Available Quantity"
                                 onChange={(event) => {
                                     setavailableQuantity(event.target.value);
@@ -244,7 +254,8 @@ const AddData = () => {
                         </Form.Group>
                         {/* https://react-bootstrap.github.io/forms/form-control/ */}
                         <Form.Group controlId="formFileMultiple" className="mb-3">
-                            <Form.Label>Upload Multiple Images</Form.Label>
+                            <Form.Label>Upload Image</Form.Label>
+
                             <Form.Control
                                 type="file"
                                 multiple
@@ -262,22 +273,7 @@ const AddData = () => {
                             >
                                 Insert
                             </Button>{" "}
-                            <Button
-                                onClick={updatedata}
-                                style={{color: "white"}}
-                                className="mr-5"
-                                variant="primary"
-                            >
-                                Update
-                            </Button>{" "}
-                            <Button
-                                style={{color: "white"}}
-                                className="mr-5"
-                                variant="primary"
-                                onClick={deletes}
-                            >
-                                Delete
-                            </Button>{" "}
+
                             <Button
                                 style={{color: "white"}}
                                 className="mr-5"
@@ -300,4 +296,4 @@ const AddData = () => {
     </div>);
 };
 
-export default AddData;
+export default AddMachineData;

@@ -8,7 +8,9 @@ import Dashboard from './components/dashboard';
 import Orders from './components/orders';
 import Repairs from './components/repairs';
 import Repair from "./components/repairs_dashboard";
-import AddData from "./components/AddData";
+import AddMachineData from "./components/AddMachineData";
+import EditMachineData from "./components/EditMachineData";
+import MachineDashboard from "./components/machine_dashboard";
 
 ReactDOM.render(
     <BrowserRouter>
@@ -22,7 +24,9 @@ ReactDOM.render(
 
 
                 <Route exact path="/dashboard" element={<Dashboard/>}/>
-                <Route exact path="/machine" element={<AddData/>}/>
+                <Route exact path="/machine/:id" element={<EditMachineData/>}/>
+                <Route exact path="/machine/add" element={<AddMachineData/>}/>
+                <Route exact path="/machine" element={<MachineDashboard/>}/>
                 <Route exact path="/repairs" element={<Repair/>}/>
 
                 <Route path="/orders/:id" element={<Orders/>}/>
