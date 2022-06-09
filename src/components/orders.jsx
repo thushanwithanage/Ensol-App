@@ -173,10 +173,9 @@ class Orders extends Component {
                                         <p class="card-title mb-0">Update Order Status</p>
                                         <select class="form-control" id="statusDropDown"
                                                 onChange={this.onChangeHandler}>
-                                            <option id="0">Cancelled</option>
-                                            <option id="1">Completed</option>
-                                            <option id="2">Accepted</option>
-                                            <option id="3">Pending</option>
+                                            <option id="0">Cancel</option>
+                                            <option id="1">Complete</option>
+                                            <option id="2">Accept</option>
                                         </select>
                                     </div>
                                     <button type="submit" class="btn btn-warning me-2"

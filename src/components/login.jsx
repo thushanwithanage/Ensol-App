@@ -37,8 +37,7 @@ class Login extends Component {
     e.preventDefault();
     let user = {
       email: this.state.email,
-      password: this.state.password,
-      fcm: " ",
+      password: this.state.password
     };
     if (navigator.onLine) 
     {
@@ -57,7 +56,7 @@ class Login extends Component {
           if (user) 
           {
             const { data } = await axios.post(
-              "https://ensolapi.herokuapp.com/auth",
+              "https://ensolapi.herokuapp.com/admin/auth",
               user
             );
 

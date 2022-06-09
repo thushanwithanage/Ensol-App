@@ -26,7 +26,6 @@ const AddMachineData = () => {
         machinePhotos: image,
     };
     const notify = (msg) => {
-        console.log(msg);
         toast.error(msg, {
             position: "top-right",
             autoClose: 5000,
@@ -41,21 +40,34 @@ const AddMachineData = () => {
     const Insert = async () => {
 
         const token = sessionStorage.getItem("token");
+        if (!serialnumber) {
+            notify("Please enter serial number");
+        } else if (!machinename) {
+            notify("Please enter machine name");
+        } else if (!description) {
+            notify("Please enter description");
+        } else if (!rentprice) {
+            notify("Please enter rent price");
+        } else if (!availablequantity) {
+            notify("Please enter available quantity");
+        } else if (!image) {
+            notify("Please select image");
+        } else {
 
+            await axios
+                .post("https://ensolapi.herokuapp.com/machine", data, {
+                    headers: {
+                        "Content-Type": "multipart/form-data", Authorization: `Bearer ${token}`,
+                    },
+                })
+                .then((response) => {
 
-        await axios
-            .post("https://ensolapi.herokuapp.com/machine", data, {
-                headers: {
-                    "Content-Type": "multipart/form-data", Authorization: `Bearer ${token}`,
-                },
-            })
-            .then((response) => {
-
-                if (response.data.status) {
-                    successNotify(response.data.data);
-                    window.location.reload();
-                }
-            });
+                    if (response.data.status) {
+                        successNotify(response.data.data);
+                        window.location.reload();
+                    }
+                });
+        }
     };
 
     const successNotify = (msg) => {
@@ -87,7 +99,7 @@ const AddMachineData = () => {
 
     return (<div className="container-scroller">
         <div>
-            <ToastContainer />
+            <ToastContainer/>
         </div>
         <nav className="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
 
@@ -166,16 +178,19 @@ const AddMachineData = () => {
                         <Form.Group className="mb-3">
                             <Form.Label>Serial Number</Form.Label>
                             <Form.Control
+                                required
                                 type="text"
                                 placeholder="Enter Serial No"
                                 onChange={(event) => {
                                     setserialNumber(event.target.value);
                                 }}
                             />
+
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label>Machine Name</Form.Label>
                             <Form.Control
+                                required
                                 type="text"
                                 placeholder="Enter Machine Name"
                                 onChange={(event) => {
@@ -186,6 +201,7 @@ const AddMachineData = () => {
                         <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
                             <Form.Label>Description</Form.Label>
                             <Form.Control
+                                required
                                 as="textarea"
                                 placeholder="Enter Your Description"
                                 rows={3}
@@ -197,7 +213,9 @@ const AddMachineData = () => {
                         <Form.Group className="mb-3">
                             <Form.Label>Rent Price</Form.Label>
                             <Form.Control
+                                required
                                 type="number"
+                                min="0"
                                 placeholder="Enter Rent Price"
                                 onChange={(event) => {
                                     setrentPrice(event.target.value);
@@ -207,8 +225,9 @@ const AddMachineData = () => {
                         <Form.Group className="mb-3">
                             <Form.Label>Available Quantity</Form.Label>
                             <Form.Control
+                                required
                                 type="number"
-
+                                min="1"
                                 placeholder="Enter Available Quantity"
                                 onChange={(event) => {
                                     setavailableQuantity(event.target.value);

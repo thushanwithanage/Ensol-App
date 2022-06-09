@@ -19,30 +19,21 @@ class Dashboard extends Component {
         orders: [],
         startDate: new Date(),
         endDate: new Date(),
-        startDate2: new Date(),
-        endDate2: new Date(),
         filteredOrders: [],
-        filterOn: false,
-        filterOn2: false,
-        repairs: [],
-        filteredRepairs: [],
         repair_count: 0,
         total_machines: 0,
         rented_machines: 0,
+        user_count: 0,
         filterText: "Filter",
-        filterText2: "Filter",
-        filterResetText: "Reset",
-        filterResetText2: "Reset",
-        user_count: 0
+        filterResetText: "Reset"
+
     };
 
     handleRowClick = (id) => {
         window.location.href = "/orders/search?id=" + id;
     }
 
-    handleRowClick2 = (id) => {
-        window.location.href = "/repairs/search?id=" + id;
-    }
+
 
     setStartDate = (sdate) => {
         this.setState({startDate: sdate})
@@ -52,23 +43,10 @@ class Dashboard extends Component {
         this.setState({endDate: edate})
     }
 
-    setStartDate2 = (sdate) => {
-        this.setState({startDate2: sdate})
-    }
-
-    setEndDate2 = (edate) => {
-        this.setState({endDate2: edate})
-    }
-
-    handleDateChange = (date) => {
-        this.state.startDate = date;
-    }
 
     filterHandler = async (e) => {
         e.preventDefault();
-        // this.state.filterOn = !this.state.filterOn;
-        //
-        // if (this.state.filterOn == true) {
+
         let orderFilter = {
             endDate: this.state.endDate,
             startDate: this.state.startDate
@@ -105,13 +83,10 @@ class Dashboard extends Component {
         });
 
         this.setState({filteredOrders: filteredList})
-        // } else {
-        //     this.setState({filteredOrders: this.state.orders, filterText: "Filter"})
-        // }
+
     }
     filterReset = async (e) => {
         e.preventDefault();
-        this.state.filterOn = false;
 
 
         this.setState({filteredOrders: this.state.orders})
@@ -124,51 +99,7 @@ class Dashboard extends Component {
 
     }
 
-    filterHandler2 = async (e) => {
-        e.preventDefault();
-        this.state.filterOn2 = !this.state.filterOn2;
 
-        if (this.state.filterOn2 == true) {
-            let repairFilter = {
-                endDate: this.state.endDate2,
-                startDate: this.state.startDate2
-            };
-            let {data} = await axios.post("https://ensolapi.herokuapp.com/admin/repair/filter", repairFilter, {
-                headers: {
-                    "Authorization": "Bearer " + sessionStorage.getItem("token")
-                },
-            });
-
-            let filteredList = data.data.repairs.map((repair) => {
-                if (repair.status == 0) {
-                    repair.status = "Cancelled";
-                    repair.color = "#F44336";
-                } else if (repair.status == 1) {
-                    repair.status = "Completed";
-                    repair.color = "#4CAF50";
-                } else if (repair.status == 2) {
-                    repair.status = "Accepted";
-                    repair.color = "#3F51B5";
-                } else if (repair.status == 3) {
-                    repair.status = "Pending";
-                    repair.color = "#FF5722";
-                }
-                return {
-                    id: repair.id,
-                    description: repair.description,
-                    username: repair.order.user.name,
-                    address: repair.order.user.address,
-                    telephone: repair.order.user.telephone,
-                    status: repair.status,
-                    color: repair.color
-                };
-            });
-
-            this.setState({filteredRepairs: filteredList, filterText2: "View all"})
-        } else {
-            this.setState({filteredRepairs: this.state.repairs, filterText2: "Filter"})
-        }
-    }
 
 
     render() {

@@ -17,31 +17,16 @@ import {Link, useNavigate} from "react-router-dom";
 
 class Repair extends Component {
     state = {
-        orders: [],
-        startDate: new Date(),
-        endDate: new Date(),
-        startDate2: new Date(),
-        endDate2: new Date(),
-        filteredOrders: [],
-        filterOn: false,
-        filterOn2: false,
         repairs: [],
         filteredRepairs: [],
-        repair_count: 0,
-        total_machines: 0,
-        rented_machines: 0,
+        startDate: new Date(),
+        endDate: new Date(),
         filterText: "Filter",
-        filterText2: "Filter",
-        filterResetText: "Reset",
-        filterResetText2: "Reset",
-        user_count: 0
+        filterResetText: "Reset"
     };
 
-    handleRowClick = (id) => {
-        window.location.href = "/orders/search?id=" + id;
-    }
 
-    handleRowClick2 = (id) => {
+    handleRowClick = (id) => {
         window.location.href = "/repairs/search?id=" + id;
     }
 
@@ -53,85 +38,27 @@ class Repair extends Component {
         this.setState({endDate: edate})
     }
 
-    setStartDate2 = (sdate) => {
-        this.setState({startDate2: sdate})
-    }
-
-    setEndDate2 = (edate) => {
-        this.setState({endDate2: edate})
-    }
-
-    handleDateChange = (date) => {
-        this.state.startDate = date;
-    }
-
-    logOut =  async (e) => {
+    logOut = async (e) => {
         sessionStorage.clear();
         window.location.href = "/";
+    }
+    
+    filterReset = async (e) => {
+        e.preventDefault();
+
+
+        this.setState({filteredRepairs: this.state.repairs})
+
     }
 
     filterHandler = async (e) => {
         e.preventDefault();
-        // this.state.filterOn = !this.state.filterOn;
-        //
-        // if (this.state.filterOn == true) {
-        let orderFilter = {
-            endDate: this.state.endDate,
-            startDate: this.state.startDate
-        };
-        let {data} = await axios.post("https://ensolapi.herokuapp.com/admin/order/filter", orderFilter, {
-            headers: {
-                "Authorization": "Bearer " + sessionStorage.getItem("token")
-            },
-        });
-
-        let filteredList = data.data.orders.map((order) => {
-            if (order.orderStatus == 0) {
-                order.orderStatus = "Cancelled";
-                order.color = "#F44336";
-            } else if (order.orderStatus == 1) {
-                order.orderStatus = "Completed";
-                order.color = "#4CAF50";
-            } else if (order.orderStatus == 2) {
-                order.orderStatus = "Accepted";
-                order.color = "#3F51B5";
-            } else if (order.orderStatus == 3) {
-                order.orderStatus = "Pending";
-                order.color = "#FF5722";
-            }
-            return {
-                id: order.id,
-                username: order.user.name,
-                address: order.user.address,
-                telephone: order.user.telephone,
-                price: order.price,
-                status: order.orderStatus,
-                color: order.color
-            };
-        });
-
-        this.setState({filteredOrders: filteredList})
-        // } else {
-        //     this.setState({filteredOrders: this.state.orders, filterText: "Filter"})
-        // }
-    }
-    filterReset = async (e) => {
-        e.preventDefault();
-        this.state.filterOn = false;
-
-
-        this.setState({filteredOrders: this.state.orders})
-
-    }
-
-    filterHandler2 = async (e) => {
-        e.preventDefault();
         this.state.filterOn2 = !this.state.filterOn2;
 
-        if (this.state.filterOn2 == true) {
+
             let repairFilter = {
-                endDate: this.state.endDate2,
-                startDate: this.state.startDate2
+                endDate: this.state.endDate,
+                startDate: this.state.startDate
             };
             let {data} = await axios.post("https://ensolapi.herokuapp.com/admin/repair/filter", repairFilter, {
                 headers: {
@@ -164,15 +91,13 @@ class Repair extends Component {
                 };
             });
 
-            this.setState({filteredRepairs: filteredList, filterText2: "View all"})
-        } else {
-            this.setState({filteredRepairs: this.state.repairs, filterText2: "Filter"})
-        }
+            this.setState({filteredRepairs: filteredList})
+
     }
 
 
     render() {
-        function s(){
+        function s() {
 
         }
 
@@ -194,7 +119,7 @@ class Repair extends Component {
                                         <NavDropdown title={sessionStorage.getItem("email")}>
 
 
-                                            <NavDropdown.Item onClick={this.logOut} >Logout</NavDropdown.Item>
+                                            <NavDropdown.Item onClick={this.logOut}>Logout</NavDropdown.Item>
 
 
                                         </NavDropdown>
@@ -258,8 +183,8 @@ class Repair extends Component {
                                         margin="normal"
                                         id="date-picker-inline"
                                         label="Start Date"
-                                        value={this.state.startDate2}
-                                        onChange={date => this.setStartDate2(date)}
+                                        value={this.state.startDate}
+                                        onChange={date => this.setStartDate(date)}
                                         KeyboardButtonProps={{
                                             'aria-label': 'change date',
                                         }}
@@ -274,8 +199,8 @@ class Repair extends Component {
                                         margin="normal"
                                         id="date-picker-inline2"
                                         label="End Date"
-                                        value={this.state.endDate2}
-                                        onChange={date => this.setEndDate2(date)}
+                                        value={this.state.endDate}
+                                        onChange={date => this.setEndDate(date)}
                                         KeyboardButtonProps={{
                                             'aria-label': 'change date',
                                         }}
@@ -284,7 +209,12 @@ class Repair extends Component {
 
                                 <button style={{marginTop: 15, color: 'white'}} type="submit"
                                         class="btn btn-warning me-2"
-                                        onClick={this.filterHandler2}>{this.state.filterText2}</button>
+                                        onClick={this.filterHandler}>{this.state.filterText}</button>
+
+                                <button style={{marginTop: 15, color: 'white'}} type="submit"
+                                        className="btn btn-danger"
+                                        onClick={this.filterReset}>{this.state.filterResetText}</button>
+
 
                             </div>
 
@@ -309,7 +239,7 @@ class Repair extends Component {
 
                                                     {this.state.filteredRepairs ? this.state.filteredRepairs.map((repair) => (
                                                         <tr key={repair.id}
-                                                            onClick={() => this.handleRowClick2(repair.id)}>
+                                                            onClick={() => this.handleRowClick(repair.id)}>
                                                             <td>{repair.id}</td>
                                                             <td>{repair.description.substring(0, 20)}</td>
                                                             <td>{repair.username}</td>
