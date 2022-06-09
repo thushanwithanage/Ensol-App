@@ -41,7 +41,7 @@ const AddMachineData = () => {
     const Insert = async () => {
 
         const token = sessionStorage.getItem("token");
-        console.log(token);
+
 
         await axios
             .post("https://ensolapi.herokuapp.com/machine", data, {
@@ -51,8 +51,10 @@ const AddMachineData = () => {
             })
             .then((response) => {
 
-                if (response.data.status)
+                if (response.data.status) {
                     successNotify(response.data.data);
+                    window.location.reload();
+                }
             });
     };
 

@@ -3,9 +3,12 @@ import React, {Component, useEffect, useState} from "react";
 import {Container, Form, Nav, NavDropdown} from "react-bootstrap";
 import {Button} from "react-bootstrap";
 import {toast, ToastContainer} from "react-toastify";
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
 const EditMachineData = () => {
 
+    const MySwal = withReactContent(Swal)
     const [serialnumber, setserialNumber] = useState("");
     const [machinename, setmachineName] = useState("");
     const [description, setDescription] = useState("");
@@ -46,56 +49,93 @@ const EditMachineData = () => {
     };
 
     const deleteMachine = () => {
-        const token = sessionStorage.getItem("token");
+        MySwal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
 
-        axios
-            .delete(`https://ensolapi.herokuapp.com/machine/${deleteid}`, {
-                headers: {
-                    "Content-Type": "multipart/form-data", Authorization: `Bearer ${token}`,
-                },
-            })
-            .then((response) => {
-                if (response.data.status)
-                    successNotify(response.data.data);
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!',
+            showCancelButton: true,
+            reverseButtons: true
 
-            });
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const token = sessionStorage.getItem("token");
+
+                axios
+                    .delete(`https://ensolapi.herokuapp.com/machine/${deleteid}`, {
+                        headers: {
+                            "Content-Type": "multipart/form-data", Authorization: `Bearer ${token}`,
+                        },
+                    })
+                    .then((response) => {
+                        if (response.data.status) {
+                            successNotify(response.data.data);
+                            window.location.href = "/machine";
+                        }
+
+                    });
+            }
+
+
+        })
+
     };
 
     const updateMachine = () => {
-        const datas = {};
-        if (serialnumber) {
-            datas.serialNumber = serialnumber;
-        }
-        if (machinename) {
-            datas.machineType = machinename;
-        }
-        if (description) {
-            datas.description = description;
-        }
-        if (rentprice) {
-            datas.rentPrice = rentprice;
-        }
-        if (availablequantity) {
-            datas.availableQty = availablequantity;
-        }
-        if (image) {
-            datas.machinePhotos = image;
-        }
+        MySwal.fire({
+            title: 'Are you sure?',
+            text: "You want to update this?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, update it!',
+            reverseButtons: true
 
-        const token = sessionStorage.getItem("token");
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const datas = {};
+                if (serialnumber) {
+                    datas.serialNumber = serialnumber;
+                }
+                if (machinename) {
+                    datas.machineType = machinename;
+                }
+                if (description) {
+                    datas.description = description;
+                }
+                if (rentprice) {
+                    datas.rentPrice = rentprice;
+                }
+                if (availablequantity) {
+                    datas.availableQty = availablequantity;
+                }
+                if (image) {
+                    datas.machinePhotos = image;
+                }
 
-        axios
-            .put(`https://ensolapi.herokuapp.com/machine/${deleteid}`, datas, {
-                headers: {
-                    "Content-Type": "multipart/form-data", Authorization: `Bearer ${token}`,
-                },
-            })
-            .then((response) => {
+                const token = sessionStorage.getItem("token");
 
-                if (response.data.status)
-                    successNotify(response.data.data);
+                axios
+                    .put(`https://ensolapi.herokuapp.com/machine/${deleteid}`, datas, {
+                        headers: {
+                            "Content-Type": "multipart/form-data", Authorization: `Bearer ${token}`,
+                        },
+                    })
+                    .then((response) => {
 
-            });
+                        if (response.data.status)
+                            successNotify(response.data.data);
+
+                    });
+            }
+
+
+        })
+
     };
 
     const imageCome = (img) => {
